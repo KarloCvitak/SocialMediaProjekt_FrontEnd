@@ -21,4 +21,11 @@ export class LikeService {
   removeLike(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/likes/${id}`);
   }
+
+  removeLikeFromAPost(postId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/likes/posts/${postId}`);
+  }
+
+
+
 }

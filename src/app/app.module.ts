@@ -10,7 +10,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { CommentComponent } from './comment/comment.component';
 import { PostCreateComponent } from './post-create/post-create.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./auth.service";
 import {AuthenticationGuard} from "./auth/auth.guard";
@@ -29,14 +29,15 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     PostCreateComponent,
     NavBarComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    AuthModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        AuthModule,
+        FormsModule
 
-  ],
+    ],
   providers: [AuthService,
     AuthenticationGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],

@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CommentService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) { }
 
   getComments(postId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/posts/${postId}/comments`);
+    return this.http.get(`${this.baseUrl}/comments/posts/${postId}`);
   }
 
   createComment(comment: any): Observable<any> {

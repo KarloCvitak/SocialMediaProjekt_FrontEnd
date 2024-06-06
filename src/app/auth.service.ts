@@ -17,6 +17,14 @@ export class AuthService {
   }
 
 
+  register(user: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/authenticate/register`, user);
+  }
+
+  checkUsernameEmail(username: string, email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/authenticate/check-username-email`, { username, email });
+  }
+
   getCurrentUserId(): string | null {
     const token = localStorage.getItem('token');
 

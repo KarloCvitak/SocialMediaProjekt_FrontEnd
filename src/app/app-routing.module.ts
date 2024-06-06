@@ -15,9 +15,7 @@ const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
   { path: 'profile/:id', component: ProfileComponent, canActivate: [AuthenticationGuard] },
   { path: 'post/:id', component: PostDetailComponent, canActivate: [AuthenticationGuard] },
-  { path: 'create-post', component: PostCreateComponent, canActivate: [AuthenticationGuard] },
-  { path: 'nav-bar', component: NavBarComponent, canActivate: [AuthenticationGuard] }
-
+  { path: 'create-post', component: PostCreateComponent, canActivate: [AuthenticationGuard] }
 ];
 
 
