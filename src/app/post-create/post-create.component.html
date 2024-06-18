@@ -1,0 +1,42 @@
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">Create Post</h5>
+    <form (ngSubmit)="createPost()">
+      <div class="mb-3">
+        <!-- Contenteditable div for post content -->
+        <div
+          class="form-control post-content"
+          contenteditable="true"
+          placeholder="What's on your mind?"
+          #postContentDiv
+          required
+        ></div>
+
+        <!-- Button to toggle GIF search -->
+        <button class="btn btn-secondary" type="button" (click)="toggleGifSearch()">Add GIF</button>
+
+        <!-- Modal for GIF search -->
+        <div *ngIf="showGifSearch" class="gif-search-modal">
+          <input
+            type="text"
+            [(ngModel)]="gifQuery"
+            name="gifQuery"
+            (keyup.enter)="searchGifs()"
+            placeholder="Search for GIFs"
+          />
+          <button class="btn btn-primary" type="button" (click)="searchGifs()">Search</button>
+          <div class="gif-results">
+            <!-- Display search results as clickable GIFs -->
+            <img
+              *ngFor="let gif of gifs"
+              [src]="gif.images.fixed_height.url"
+              (click)="selectGif(gif)"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- Button to submit the form -->
+      <button type="submit" class="btn btn-primary">Post</button>
+    </form>
+  </div>
+</div>

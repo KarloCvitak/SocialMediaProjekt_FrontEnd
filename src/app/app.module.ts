@@ -17,6 +17,7 @@ import {AuthenticationGuard} from "./auth/auth.guard";
 import {AuthInterceptor} from "./auth/auth-interceptor";
 import {AuthModule} from "./auth/auth.module";
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { SafeHtmlPipe } from './safe-html.pipe';
 
 // @ts-ignore
 @NgModule({
@@ -27,7 +28,8 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     PostDetailComponent,
     CommentComponent,
     PostCreateComponent,
-    NavBarComponent
+    NavBarComponent,
+    SafeHtmlPipe
   ],
     imports: [
         BrowserModule,

@@ -1,0 +1,52 @@
+<app-navbar (toggleCreatePost)="showPostCreate = !showPostCreate"></app-navbar>
+<div class="container mt-4">
+  <h2>My Feed</h2>
+  <app-post-create *ngIf="showPostCreate" (postCreated)="addPost($event)"></app-post-create>
+
+  <div *ngIf="posts.length === 0" class="alert alert-info">No posts available.</div>
+  <div *ngFor="let post of posts" class="card mb-3">
+    <div class="card-body">
+      <div *ngIf="!post.isEditing" class="card-text" [innerHTML]="post.content | safeHtml"></div>
+      <div *ngIf="post.isEditing">
+        <div
+          class="form-control post-content mb-2"
+          contenteditable="true"
+          #editContentDiv
+          [innerHTML]="post.editContent"
+          (input)="onEditContentInput(post, editContentDiv.innerHTML)"
+        ></div>
+      </div>
+      <div class="post-footer">
+        <small class="text-muted">Posted by <strong>{{ getUsername(post.user_id) }}</strong> on {{ post.created_at | date:'short' }}</small>
+        <span>{{ getLikes(post.id) }}</span>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex">
+            <button class="btn btn-primary margin-for-button" (click)="likePost(post)">
+              <i class="fas fa-thumbs-up"></i> Like
+            </button>
+            <button class="btn btn-secondary margin-for-button" (click)="viewPostDetail(post.id)">
+              <i class="fas fa-comments"></i> View Comments
+            </button>
+          </div>
+          <div *ngIf="post.user_id === authService.getCurrentUserId()" class="dropdown margin-for-button">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              Options
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" (click)="editPost(post)">Edit</a></li>
+              <li><a class="dropdown-item" (click)="deletePost(post.id)">Delete</a></li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="post.isEditing" class="d-flex justify-content-end mt-2">
+          <button class="btn btn-success me-2" (click)="updatePost(post)">
+            <i class="fas fa-save"></i> Save
+          </button>
+          <button class="btn btn-secondary" (click)="cancelEdit(post)">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

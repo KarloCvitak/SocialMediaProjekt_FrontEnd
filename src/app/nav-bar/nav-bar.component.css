@@ -1,0 +1,35 @@
+/* navbar.component.css */
+.sidebar {
+  width: 200px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #333;
+  padding-top: 60px; /* Adjust according to your design */
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 10px;
+}
+
+.sidebar li a {
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar li button {
+  color: white;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.sidebar li button:hover {
+  color: #ddd;
+}
