@@ -6,6 +6,9 @@
           <h4>Login</h4>
         </div>
         <div class="card-body">
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="form-group mb-3">
               <label for="email" class="form-label">Email</label>
@@ -30,8 +33,9 @@
           </form>
         </div>
         <div class="card-footer text-center">
-          <a routerLink="/register" class="btn btn-link">Don't have an account? Register here</a>
+          <a routerLink="/register" class="btn btn-link text-decoration-none text-muted">Register here</a>
         </div>
+
       </div>
     </div>
   </div>

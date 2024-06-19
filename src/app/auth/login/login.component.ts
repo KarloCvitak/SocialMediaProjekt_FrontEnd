@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../user.service';
 import { Router } from '@angular/router';
-import {AuthService} from "../../auth.service";
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +9,7 @@ import {AuthService} from "../../auth.service";
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  errorMessage: string = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
@@ -24,20 +24,19 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe(response => {
         console.log('Login Response:', response);
         if (response && response.token) {
-
           this.authService.setToken(response.token);
           console.log('Token Set:', response.token);
           this.router.navigate(['']);
         } else {
+          this.errorMessage = 'Invalid login response';
           console.error('Invalid login response', response);
         }
       }, error => {
+        this.errorMessage = 'Incorrect email or password. Please try again.';
         console.error('Login error', error);
       });
     } else {
       console.warn('Form is invalid');
     }
   }
-
-
 }

@@ -18,6 +18,7 @@ import {AuthInterceptor} from "./auth/auth-interceptor";
 import {AuthModule} from "./auth/auth.module";
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
 
 // @ts-ignore
 @NgModule({
@@ -29,7 +30,8 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     CommentComponent,
     PostCreateComponent,
     NavBarComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    AdminUsersComponent
   ],
     imports: [
         BrowserModule,

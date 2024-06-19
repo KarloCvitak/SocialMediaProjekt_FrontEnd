@@ -9,7 +9,11 @@
       <p class="card-text"><strong>Role:</strong> {{ user.role }}</p>
       <p class="card-text"><strong>Account Created:</strong> {{ user.created_at | date:'short' }}</p>
     </div>
+
+
   </div>
+
+  <button *ngIf="isAdmin()" class="btn btn-primary mb-3" (click)="navigateToAdminPage()">Manage Users</button>
 
   <app-post-create *ngIf="showPostCreate" (postCreated)="addPost($event)"></app-post-create>
 
@@ -18,9 +22,6 @@
   <div *ngFor="let post of posts" class="card mb-3">
     <div class="card-body">
       <p *ngIf="!post.isEditing" class="card-text" [innerHTML]="post.content | safeHtml"></p>
-
-
-
       <textarea *ngIf="post.isEditing" [(ngModel)]="post.editContent" class="form-control mb-2"></textarea>
       <div class="post-footer">
         <small class="text-muted">{{ getLikes(post.id) }}</small>

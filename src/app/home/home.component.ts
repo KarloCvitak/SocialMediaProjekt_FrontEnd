@@ -16,6 +16,11 @@ export class HomeComponent implements OnInit {
   users: any[] = [];
   likes: any[] = [];
   showPostCreate: boolean = false;
+  showCreatePost = true; // Initially true for home component
+
+  toggleCreatePost(show: boolean) {
+    this.showCreatePost = show;
+  }
 
   constructor(
     private postService: PostService,
@@ -27,17 +32,37 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+
+
+    this.loadUsers();
+    this.loadLikes();
+    this.loadPosts();
+  }
+
+
+  loadUsers(){
     this.userService.getUsers().subscribe(response => {
       if (response && response.users) {
         this.users = response.users;
+        this.isAdmin();
         console.log(this.users);
       } else {
         console.error('Invalid response:', response);
       }
     });
+  }
 
-    this.loadLikes();
-    this.loadPosts();
+  isAdmin() {
+    const user_id = this.authService.getCurrentUserId();
+    const adminUser = this.users.find(user => user.id === user_id);
+
+    if (adminUser && adminUser.role === "admin") {
+      console.log("ADMIN" + adminUser.role)
+      return true;
+    } else {
+      return false;
+    }
   }
 
   viewPostDetail(postId: number) {
@@ -205,9 +230,5 @@ export class HomeComponent implements OnInit {
         console.error('Error removing likes for post', error);
       }
     );
-  }
-
-  onEditContentInput(post: any, content: string) {
-    post.editContent = content;
   }
 }

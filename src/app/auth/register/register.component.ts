@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from "../../auth.service";
 
@@ -18,41 +18,37 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required]
-    }, { validator: this.passwordMatchValidator });
-  }
-
-  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      return { passwordMismatch: true };
-    }
-    return null;
-  }
-
-  checkUsernameEmailAvailability() {
-    const { username, email } = this.registerForm.value;
-    this.authService.checkUsernameEmail(username, email).subscribe(response => {
-      this.usernameInUse = response.usernameInUse;
-      this.emailInUse = response.emailInUse;
     });
   }
 
   onSubmit() {
+    if (this.registerForm.valid) {
+      const { username, email, password } = this.registerForm.value;
 
-    this.checkUsernameEmailAvailability();
+      // Check username and email availability
+      this.authService.checkUsernameEmail(username, email).subscribe(response => {
+        this.usernameInUse = response.usernameInUse;
+        this.emailInUse = response.emailInUse;
 
-    if (this.registerForm.valid && !this.usernameInUse && !this.emailInUse) {
-      this.authService.register(this.registerForm.value).subscribe(response => {
-        if (response && response.token) {
-          this.authService.setToken(response.token);
-          this.router.navigate(['']);
-        } else {
-          console.error('Invalid registration response', response);
+        if (!this.usernameInUse && !this.emailInUse) {
+          // Register user if both username and email are available
+          this.authService.register({ username, email, password }).subscribe(
+            (registerResponse) => {
+              console.log('Registration successful:', registerResponse);
+              this.router.navigate(['/login']); // Navigate to login page upon successful registration
+            },
+            error => {
+              console.error('Registration error:', error);
+              // Handle registration error
+            }
+          );
         }
       }, error => {
-        console.error('Registration error', error);
+        console.error('Username/email availability check error:', error);
+        // Handle check error
       });
+    } else {
+      console.warn('Form is invalid');
     }
   }
 }

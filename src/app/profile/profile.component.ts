@@ -32,11 +32,11 @@ export class ProfileComponent implements OnInit {
     this.userService.getUsers().subscribe(response => {
       if (response && response.users) {
         this.users = response.users;
+        this.isAdmin();
       } else {
         console.error('Invalid response:', response);
       }
     });
-
     const user_id = this.authService.getCurrentUserId();
     this.loadUserInfo(user_id);
     this.loadUserPosts(user_id);
@@ -97,7 +97,6 @@ export class ProfileComponent implements OnInit {
     return displayText;
   }
 
-
   sortPostsByDate() {
     this.posts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
   }
@@ -123,12 +122,11 @@ export class ProfileComponent implements OnInit {
       (error) => {
         console.error('Error removing likes for post', error);
       }
-    );
-  }
+    );}
 
   editPost(post: any) {
     post.isEditing = true;
-    post.editContent = post.content;  // Store current content in editContent
+    post.editContent = post.content; // Store current content in editContent
   }
 
   updatePost(post: any) {
@@ -164,8 +162,7 @@ export class ProfileComponent implements OnInit {
       (error) => {
         console.error('Error creating post', error);
       }
-    );
-  }
+    );}
 
   likePost(post: any) {
     const user_id = this.authService.getCurrentUserId();
@@ -220,8 +217,31 @@ export class ProfileComponent implements OnInit {
     return user ? user.username : 'Unknown';
   }
 
+  navigateToAdminPage() {
+    this.router.navigate(['/admin/users']); // Replace with your admin route
+  }
+
+  showCreatePost = true; // Initially true for profile component
+
+  toggleCreatePost(show: boolean) {
+    this.showCreatePost = show;
+  }
+
+  isAdmin() {
+    const user_id = this.authService.getCurrentUserId();
+    const adminUser = this.users.find(user => user.id === user_id);
+
+    if (adminUser && adminUser.role === "admin") {
+      console.log("ADMIN" + adminUser.role)
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   viewPostDetail(postId: number) {
     this.router.navigate(['/post', postId]);
   }
 
 }
+

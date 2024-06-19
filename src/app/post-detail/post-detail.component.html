@@ -1,26 +1,41 @@
 <app-navbar></app-navbar>
-<!-- post-detail.component.html -->
 <div class="container mt-4">
   <div class="card mb-3" *ngIf="thisPost">
     <div class="card-body">
-      <p class="card-text">{{ thisPost.content }}</p>
+      <div *ngIf="!thisPost.isEditing" class="card-text" [innerHTML]="thisPost.content | safeHtml"></div>
+      <textarea *ngIf="thisPost.isEditing" [(ngModel)]="thisPost.editContent" class="form-control mb-2"></textarea>
 
-
-    <div class="post-footer">
-      <small class="text-muted">Posted by <strong>{{ getUsername(thisPost.user_id) }}</strong> on {{ thisPost.created_at | date:'short' }}</small>
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <button class="btn btn-primary" (click)="likePost(thisPost)">
-            <i class="fas fa-thumbs-up"></i> Like
+      <div class="post-footer">
+        <small class="text-muted">Posted by <strong>{{ getUsername(thisPost.user_id) }}</strong> on {{ thisPost.created_at | date:'short' }}</small>
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <button class="btn btn-primary" (click)="likePost(thisPost)">
+              <i class="fas fa-thumbs-up"></i> Like
+            </button>
+          </div>
+          <div class="likes-count">
+            <span>{{ getLikes(thisPost.id) }}</span>
+          </div>
+          <div *ngIf="thisPost.user_id === authService.getCurrentUserId() || isAdmin()" class="dropdown margin-for-button">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              Options
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" (click)="editPost(thisPost)">Edit</a></li>
+              <li><a class="dropdown-item" (click)="deletePost(thisPost.id)">Delete</a></li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="thisPost.isEditing" class="d-flex justify-content-end mt-2">
+          <button class="btn btn-success me-2" (click)="updatePost(thisPost)">
+            <i class="fas fa-save"></i> Save
           </button>
-                 </div>
-        <div class="likes-count">
-          <span>{{ getLikes(thisPost.id) }}</span>
+          <button class="btn btn-secondary" (click)="cancelEdit(thisPost)">
+            <i class="fas fa-times"></i> Cancel
+          </button>
         </div>
       </div>
     </div>
-    </div>
-
   </div>
 
   <h3>Comments</h3>
@@ -28,7 +43,17 @@
   <div *ngFor="let comment of comments" class="card mb-3">
     <div class="card-body">
       <p class="card-text">{{ comment.content }}</p>
-      <button class="btn btn-danger" (click)="deleteComment(comment.id)">Delete</button>
+
+      <div class="post-footer">
+
+        <div class="flex-column">
+      <small class="text-muted">Posted by <strong>{{ getUsername(comment.user_id) }}</strong> on {{ comment.created_at | date:'short' }}</small>
+      <div *ngIf="comment.user_id === authService.getCurrentUserId()">
+        <button class="btn btn-danger" (click)="deleteComment(comment.id)">Delete</button>
+      </div>
+
+        </div>
+     </div>
     </div>
   </div>
 

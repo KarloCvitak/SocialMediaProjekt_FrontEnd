@@ -9,13 +9,16 @@ import { PostCreateComponent } from './post-create/post-create.component';
 import {AuthenticationGuard} from "./auth/auth.guard";
 import {AuthModule} from "./auth/auth.module";
 import {NavBarComponent} from "./nav-bar/nav-bar.component";
+import {AdminUsersComponent} from "./admin-users/admin-users.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthenticationGuard] },
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
   { path: 'profile/:id', component: ProfileComponent, canActivate: [AuthenticationGuard] },
   { path: 'post/:id', component: PostDetailComponent, canActivate: [AuthenticationGuard] },
-  { path: 'create-post', component: PostCreateComponent, canActivate: [AuthenticationGuard] }
+  { path: 'create-post', component: PostCreateComponent, canActivate: [AuthenticationGuard] },
+  { path: 'admin/users', component: AdminUsersComponent, canActivate: [AuthenticationGuard] }
+
 ];
 
 

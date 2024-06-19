@@ -23,4 +23,9 @@ export class UserService {
   updateProfile(id: number, profileData: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/users/${id}`, profileData);
   }
+
+  updateUserRole(userId: number, newRole: string): Observable<any> {
+    // Assuming your API expects 'role' to be updated in profileData
+    return this.updateProfile(userId, { role: newRole });
+  }
 }

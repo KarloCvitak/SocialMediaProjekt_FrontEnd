@@ -7,15 +7,7 @@
   <div *ngFor="let post of posts" class="card mb-3">
     <div class="card-body">
       <div *ngIf="!post.isEditing" class="card-text" [innerHTML]="post.content | safeHtml"></div>
-      <div *ngIf="post.isEditing">
-        <div
-          class="form-control post-content mb-2"
-          contenteditable="true"
-          #editContentDiv
-          [innerHTML]="post.editContent"
-          (input)="onEditContentInput(post, editContentDiv.innerHTML)"
-        ></div>
-      </div>
+      <textarea *ngIf="post.isEditing" [(ngModel)]="post.editContent" class="form-control mb-2"></textarea>
       <div class="post-footer">
         <small class="text-muted">Posted by <strong>{{ getUsername(post.user_id) }}</strong> on {{ post.created_at | date:'short' }}</small>
         <span>{{ getLikes(post.id) }}</span>
@@ -28,7 +20,7 @@
               <i class="fas fa-comments"></i> View Comments
             </button>
           </div>
-          <div *ngIf="post.user_id === authService.getCurrentUserId()" class="dropdown margin-for-button">
+          <div *ngIf="post.user_id === authService.getCurrentUserId() || isAdmin()" class="dropdown margin-for-button">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
               Options
             </button>
