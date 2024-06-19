@@ -1,0 +1,26 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <h2>Manage Users</h2>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <select class="form-select" [(ngModel)]="user.role" (change)="updateUserRole(user, user.role)">
+          <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+        </select>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</div>
